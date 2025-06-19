@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-eplant
+  namespace: new-namespace-practice
+spec:
+  containers:
+  - name: nginx
+    image: tiru43/eplant-shopping:v2
+    ports:
+      - containerPort: 80

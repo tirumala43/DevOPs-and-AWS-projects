@@ -1,0 +1,28 @@
+apiVersion: batch/v1 
+kind: Job 
+metadata:
+  name: job-sample
+  namespace: test 
+
+spec:
+  parallelism: 2 
+  completions: 2 
+  backoffLimit: 1
+  activeDeadlineSeconds: 100
+
+  template:
+    metadata:
+       labels:
+         app: job-sample
+
+    spec:
+      restartPolicy: Never  # Important: Jobs usually don't restart
+      containers:
+      - name: sample-container
+        image: busybox
+        command: ["sh", "-c", "echo Hello from Kubernetes Job! && sleep 10"]
+        ports:
+        - containerPort: 80
+        env:
+        - name: GREETING
+          value: "Welcome to K8s Job"

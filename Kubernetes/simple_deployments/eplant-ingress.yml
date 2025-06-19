@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+   name:  eplant-app-ingress 
+spec:
+  replicas: 3 
+  selector:
+    matchLabels:
+       app: eplant-app-ingress
+  template:
+    metadata:
+      labels:
+        app: eplant-app-ingress
+    spec:
+      containers:
+         - name: eplant-containers
+           image: tiru43/eplant-shopping:v3
+           ports:
+             - containerPort: 80
+      

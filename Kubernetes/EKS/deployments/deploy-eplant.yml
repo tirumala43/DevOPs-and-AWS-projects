@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+   name:  eks-eplant 
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+       app: eks-eplant
+  template:
+    metadata:
+      labels:
+        app: eks-eplant
+    spec:
+      containers:
+         - name: eplant-container
+           image: tiru43/eplant-shopping:v3
+           ports:
+             - containerPort: 80
+      
