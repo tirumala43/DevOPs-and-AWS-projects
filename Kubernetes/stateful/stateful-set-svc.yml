@@ -5,7 +5,7 @@ metadata:
   namespace: state-ns
 
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: mysql-stateful
   
@@ -14,3 +14,4 @@ spec:
     - port: 3306
       targetPort: 3306
       nodePort: 30036  
+  clusterIP: None

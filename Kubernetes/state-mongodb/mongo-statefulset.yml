@@ -1,0 +1,81 @@
+apiVersion: apps/v1 
+kind: StatefulSet
+metadata: 
+  name: mongodb-sfs 
+  namespace: mongodb-ns
+  labels:
+    app: mongo-db
+
+spec:
+  replicas: 3 
+  serviceName: svc-mongodb
+  selector:
+    matchLabels:
+      app: mongo-db
+
+  template:
+    metadata:
+      labels:
+        app: mongo-db 
+
+    spec:
+      
+      containers:
+        - name: mongodb-c     # c - container 
+          image: mongo:4.4
+          ports:
+            - containerPort: 27017 
+
+          command:
+            - mongod 
+            - "--replSet"
+            - "myReplicaSet"   # Name of replicasets
+            - "--bind_ip_all"  # allow connections form all ip address
+            - "--dbpath=data/db"
+          volumeMounts:
+            - name: mongodb-persistent-volume
+              mountPath: /data/db 
+
+          env:
+            - name: mongodb-cred-username
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-cred-secret
+                  key: MONGO_ROOT_USERNAME
+            - name: mongodb-cred-password
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-cred-secret
+                  key: MONGO_ROOT_PASSWORD
+          resources:
+            requests:
+               cpu: "200m"
+               memory: "250Mi"
+            limits:
+              cpu: "400m"
+              memory: "540Mi"
+      securityContext:
+        fsGroup: 1000 # Ensure the MongoDB process has write permissions to the volume
+  volumeClaimTemplates:
+    - metadata:
+        name: mongodb-persistent-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+            #storageClassName: standard # Or your preferred StorageClass (e.g., 'gp2' for AWS, 'hostpath' for local testing)
+        storageClassName: microk8s-hostpath
+        resources:
+          requests:
+            storage: 1Gi # Adjust storage size as needed
+
+      
+
+
+
+             
+      
+            
+
+            
+
+
+

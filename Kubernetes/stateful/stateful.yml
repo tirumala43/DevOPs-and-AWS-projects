@@ -4,7 +4,7 @@ metadata:
    name:  mysql-stateful
    namespace: state-ns
 spec:
-  serviceName:
+  serviceName: my-sql-svc 
   replicas: 3 
   selector:
      matchLabels:

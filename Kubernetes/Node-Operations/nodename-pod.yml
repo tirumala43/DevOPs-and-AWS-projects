@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hard-scheduling
+  namespace: node-operations
+  labels:
+    type: webserver
+    app: nginx                # labels helps for filtering the pods based on labels
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+      - containerPort: 80
+
+  nodeName: tiru43       # this pod runs in the specific node mentioned in nodeName  -  this is hard scheduling 

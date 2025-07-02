@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: taint-pod
+  namespace: node-operations
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+
+  tolerations:
+    - key: "type"
+      operate: "Equal"
+      value: "gpu"
+      effect: "perferNoSchedule"           # means the newer pods is going to check
+      #effect: "perferNoSchedule"      # No guarantee 
+      #effect: "noExecute"             # existing or newer pods 
+
+
+    
+
+ 

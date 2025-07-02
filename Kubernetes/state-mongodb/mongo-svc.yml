@@ -1,0 +1,18 @@
+apiVersion: v1 
+kind: Service 
+metadata:
+   name: svc-mongodb 
+   namespace: mongodb-ns    #service runs in mongodb-ns namespace 
+   labels:
+     app: mongo-db
+
+spec:
+  type: ClusterIP
+  clusterIP: None           # cluster ip becomes None but provides DNS name so - clusterIP set to None
+  selector:
+    app: mongo-db 
+
+  ports: 
+    - port: 27017        # service port to reach containers
+      targetPort: 27017  # container port to run 
+         
