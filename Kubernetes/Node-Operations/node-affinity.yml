@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: affinity-pod
+  namespace: node-operations
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+        - containerPort: 80
+
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: disktype 
+                operator: In 
+                values: ["hdd"]
+
+#Where requriedDuringSchedulingIgnoredDuringExecution  - it strictly checks for matching labels 
+#tiru43   Ready    <none>   36d   v1.31.7   
+# labels = beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=tiru43,kubernetes.io/os=linux,
+#microk8s.io/cluster=true,node.kubernetes.io/microk8s-controlplane=microk8s-controlplane
+
+# no labels assing disktype=hdd no tiru43(node) doesn't assing the pod and still in pending status show in below 
+    # - affinity-pod         0/1     Pending   0          40h
+
+
+
+
+  

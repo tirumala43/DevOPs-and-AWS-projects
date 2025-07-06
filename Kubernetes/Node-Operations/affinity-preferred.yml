@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: affinity-preferred
+  namespace: node-operations
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+        - containerPort: 80
+
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+             matchExpressions:
+              - key: disktype 
+                operator: In 
+                values: ["hdd"]
+
+# The affinity - preferred check for labels if not found or not matching also it assign to nodes 
+
+#NAME     STATUS   ROLES    AGE   VERSION   LABELS
+#tiru43   Ready    <none>   36d   v1.31.7   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=tiru43,
+#kubernetes.io/os=linux,microk8s.io/cluster=true,node.kubernetes.io/microk8s-controlplane=microk8s-controlplane
+
+# no labels assgin to node tiru43
+#affinity-preferred   1/1     Running   0          11s  - a pod is running 
+
+#affinity-preferred   1/1     Running   0          29s   10.1.160.2   tiru43   <none>           <none>
+#NAME                 READY   STATUS    RESTARTS   AGE   IP           NODE     NOMINATED NODE   READINESS GATES
+#affinity-pod         0/1     Pending   0          40h   <none>       <none>   <none>           <none>
+#affinity-preferred   1/1     Running   0          29s   10.1.160.2   tiru43   <none>           <none>
+
+
+
+  
